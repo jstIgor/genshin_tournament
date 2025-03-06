@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Страница 2</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Страница 2</h1>
+    <p>Эта страница доступна для игроков и админов.</p>
+
+    <h2>Навигация</h2>
+    <button onclick="window.location.href='/'">Главная</button>
+    <button onclick="window.location.href='/page2'">Страница 2</button>
+                {% if session.get('status') == 'admin' %}
+    <button onclick="window.location.href='/page3'">Страница 3</button>
+        {% endif %}
+
+
+    <button onclick="window.location.href='/logout'">Выйти</button>
+
+    {% if session.get('status') == 'admin' %}
+    <!-- Кнопка только для админа -->
+    <button>Ничего не делает</button>
+    {% endif %}
+
+
+</body>
+</html>

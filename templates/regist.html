@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='about.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Pravil.css') }}" />
+<link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='setka.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='rigist.css') }}" />
+
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='about.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  <title>Mogo</title>
+</head>
+
+<body>
+
+<img src="{{ url_for('static', filename='image/Layer 6.png') }}" alt="Фоновое изображение" class="bg" />
+<img src="{{ url_for('static', filename='image//Black-T line top.png') }}" alt="Фоновое изображение" class="gena" />
+
+
+
+    <form method="post">
+    <div class="login-box">
+      <div class="user-box">
+        <input type="text" name="username" placeholder="">
+        <label>Username</label>
+      </div>
+      <div class="user-box">
+        <input type="password" name="password" placeholder="">
+        <label>Password</label>
+      </div>
+<center>
+  <button type="submit" class="submit-btn">SEND</button>
+</center>
+
+    </div>
+  </form>
+
+
+
+
+
+
+<!--    {% if session.get('status') == 'admin' %}-->
+<!--    &lt;!&ndash; Кнопка только для админа &ndash;&gt;-->
+<!--        <button class='buut' onclick="window.location.href='/logout'">Выйти</button>
+-->
+<!--    {% endif %}-->
+<button class='buut' onclick="window.location.href='/logout'">Выйти</button>
+
+
+
+  <div class="intro">
+
+      <img src="{{ url_for('static', filename='image//tg.png') }}" alt="Фоновое изображение" class="tg" />
+
+
+    <h1 class="white-text2">Wuthering</h1>
+    <h1 class="white-text22">Waves</h1>
+ <div class="centered-links1">
+    <nav class="panelll">
+        <ul>
+              <li><a onclick="window.location.href='/'">About</a></li>
+                <li><a onclick="window.location.href='/regist'">Participate</a></li>
+                <li><a onclick="window.location.href='/pravil'">Rules</a></li>
+                <li><a onclick="window.location.href='/tablo'">Tournament Bracket</a></li>
+
+                    {% if session.get('status') in ["player", "admin"] %}
+                <li><a onclick="window.location.href='/regis_zap'">regis_zap</a></li>
+                    {% endif %}
+
+                            {% if session.get('status') =="admin" %}
+                <li><a onclick="window.location.href='/regis_zap'">Participate5</a></li>
+                    {% endif %}
+        </ul>
+   </nav>
+ </div>
+
+
+
+
+
+    <h1 class="regg">REGISTRATION</h1>
+    <h1 class="redd2">Прием заявок на участие!</h1>
+
+
+
+
+
+
+
+    <form method="POST">
+
+    </form>
+
+      <h1 class="you">Programmer</h1>
+    <h1 class="you2">@zymer44</h1>
+
+<p class="text4">
+    <a href="#" class="blue-white">MaliwanRill</a>
+    <a href="#" class="red-white">miroichii</a>
+</p>
+
+  </div>
+
+
+
+
+
+
+</body>
+</html>

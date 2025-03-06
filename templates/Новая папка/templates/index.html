@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <h1>Главная страница</h1>
+
+    <form method="post">
+        <input type="text" name="status_input" placeholder="Введите 1 (игрок) или пароль (админ)">
+        <button type="submit">Установить статус</button>
+    </form>
+
+    <h2>Навигация</h2>
+    <button onclick="window.location.href='/'">Главная</button>
+    <button onclick="window.location.href='/page2'">Страница 2</button>
+            {% if session.get('status') == 'admin' %}
+    <button onclick="window.location.href='/page3'">Страница 3</button>
+    {% endif %}
+
+    <button onclick="window.location.href='/logout'">Выйти</button>
+
+    <br><br>
+
+    {% if session.get('status') == 'admin' %}
+    <!-- Кнопка только для админа -->
+    <button>Ничего не делает</button>
+    {% endif %}
+
+    <br><br>
+
+
+
+</body>
+</html>

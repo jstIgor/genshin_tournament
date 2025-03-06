@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='about.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Pravil.css') }}" />
+<link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='setka.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='rigist.css') }}" />
+
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='about.css') }}">
+
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+  <title>Mogo</title>
+</head>
+
+<body>
+
+<img src="{{ url_for('static', filename='image/progress-bg-452c1851.webp') }}" alt="Фоновое изображение" class="bg" />
+
+  <div class="intro">
+ <div class="centered-links1">
+    <nav class="panelll">
+        <ul>
+              <li><a onclick="window.location.href='/'">About</a></li>
+                <li><a onclick="window.location.href='/regist'">Participate</a></li>
+                <li><a onclick="window.location.href='/pravil'">Rules</a></li>
+                <li><a onclick="window.location.href='/tablo'">Tournament Bracket</a></li>
+
+                    {% if session.get('status') in ["player", "admin"] %}
+                <li><a onclick="window.location.href='/regis_zap'">regis_zap</a></li>
+                    {% endif %}
+
+                            {% if session.get('status') =="admin" %}
+                <li><a onclick="window.location.href='/regis_zap'">Participate5</a></li>
+                    {% endif %}
+        </ul>
+   </nav>
+ </div>
+
+
+
+<h1 class="gradient-text2">СЕТКА <BR>ТУРНИРА!</h1>
+
+ <img src="../image/setka.png" alt="Фоновое изображение" class="setka" />
+      <img src="../image/dzinsi.png" alt="Фоновое изображение" class="dzinsi" />
+
+
+</div>
+</body>
+</html>

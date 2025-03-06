@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='regis_zapolnenie.css') }}" />
+    <title>Dropdown</title>
+    <style>
+
+        }
+        .login-box-02 {
+            position: fixed;
+            top: 8%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            box-sizing: border-box;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+            border-radius: 1px;
+            border: 3px solid white;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box-02 img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .white-text_c2-0 {
+            font-family: "Inter", sans-serif;
+            font-weight: 100;
+            font-size: 96px; /* Адаптивный размер текста */
+            background-color: black; /* Черный фон */
+            color: white; /* Белый текст */
+            position: absolute; /* Абсолютное позиционирование внутри родителя */
+            left: 50%;
+            top: 42%;
+            transform: translate(-50%, -50%); /* Центрирование */
+            white-space: nowrap; /* Чтобы текст не переносился */
+            overflow: hidden; /* Чтобы ничего не выходило за пределы */
+            padding: 10px; /* Можно добавить отступы для красивого отображения */
+            border: none; /* Убираем обводки */
+        }
+        .login-box-0 {
+            position: fixed;
+            top: 8%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            box-sizing: border-box;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+            border-radius: 1px;
+            border: 3px solid white;
+            overflow: hidden;
+        }
+        .login-box {
+            position: fixed;
+            top: 58%;
+            left: 20%;
+            width: 561px;
+            height: 716px;
+            padding: 5vw;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            box-sizing: border-box;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+            border-radius: 1px;
+            border: 5px solid white;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .login-box2 {
+            position: fixed;
+            top: 58%;
+            right: 20%;
+            width: 541px;
+            height: 716px;
+            padding: 5vw;
+            transform: translate(50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            box-sizing: border-box;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+            border-radius: 1px;
+            border: 5px solid white;
+        }
+        .login-box-021 {
+            position: fixed;
+            bottom: 0%;
+            left: 25%;
+            width: 50px;
+            height: 40px;
+            transform: translate(-50%, 30%);
+            background: rgba(0, 0, 0, 0.8);
+            box-sizing: border-box;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+            border-radius: 1px;
+            border: 3px solid white;
+            pointer-events: none;
+        }
+        .login-box-022 {
+
+
+            right: 0%;
+            width: 50px;
+            height: 40px;
+            transform: translate(5%, 30%);
+            background: rgba(0, 0, 0, 0.8);
+            box-sizing: border-box;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+            border-radius: 1px;
+            border: 3px solid white;
+            pointer-events: none;
+        }
+        .hidden-first {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+.container {
+    position: relative;
+    margin-top: 600px; /* Опускаем все элементы ниже */
+}
+
+.login-box {
+    position: relative;
+}
+
+.white-text_c2-0 {
+    cursor: pointer;
+    padding: 10px;
+    background-color: lightgreen;
+}
+
+.character-dropdown {
+    position: absolute;
+    top: 650px; /* Смещаем вниз */
+    left: 50px;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    list-style-type: none;
+    display: none;
+}
+
+.character-dropdown ul {
+    padding: 0;
+    margin: 0;
+}
+
+.character-dropdown li {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.character-dropdown li:hover {
+    background-color: #f0f0f0;
+}
+
+.login-box-02 {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    z-index: 1000;
+    pointer-events: auto;
+    top: 650px; /* Опускаем новые блоки ниже */
+}
+
+    </style>
+</head>
+<body>
+<div class="container">
+  <div class="login-box">
+    <div class="login-box-0">
+      <button class="white-text_c2-0">+</button>
+    </div>
+    <div class="login-box-02 hidden-first">
+      <div class="login-box-021"></div>
+      <div class="login-box-022"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Выпадающий список с названием -->
+<div class="character-dropdown" style="display: none;">
+  <p>Выберите персонажа:</p>
+  <ul id="character-list"></ul>
+</div>
+
+<!-- Место для отображения изображения выбранного персонажа -->
+<img id="character-image" src="" style="display: none; margin-top: 20px;"/>
+
+<script>
+// Слушаем клик по кнопке с классом ".white-text_c2-0"
+document.querySelector(".white-text_c2-0").addEventListener("click", function () {
+    // Получаем родительский контейнер для новых боксов
+    let parentBox = document.querySelector(".login-box");
+
+    // Создаем новый элемент div, который будет представлять новый бокс
+    let newBox = document.createElement("div");
+    newBox.classList.add("login-box-02");  // Добавляем класс для стилизации бокса
+
+    // Считаем количество уже существующих боксов внутри родительского контейнера
+    let count = parentBox.querySelectorAll(".login-box-02").length;
+
+
+        let rowSpacing = 140; // Устанавливаем расстояние между рядами (например, 150px)
+
+
+    // Вычисляем позицию нового бокса по горизонтали и вертикали, чтобы они располагались сеткой
+    let x = 50 + (count % 5) * 110 + 5;  // Расстояние по горизонтали
+    let y = 50 + Math.floor(count / 5) * rowSpacing;  // Расстояние по вертикали
+
+
+
+    // Устанавливаем позицию нового бокса (с абсолютным позиционированием)
+    newBox.style.position = "absolute";
+    newBox.style.left = `${x}px`;  // Устанавливаем отступ по горизонтали
+    newBox.style.top = `${y+85}px`;   // Устанавливаем отступ по вертикали
+
+    newBox.style.top = `${y + 4}px`;
+
+    // Добавляем новый бокс в родительский контейнер
+    parentBox.appendChild(newBox);
+
+    // Создаём два вложенных блока
+    let newBox1 = document.createElement("div");
+    let newBox2 = document.createElement("div");
+    newBox1.classList.add("login-box-021");
+    newBox2.classList.add("login-box-022");
+
+    newBox1.style.position = "absolute";
+    newBox1.style.left = "0px";
+    newBox1.style.top = "50px";
+
+    newBox1.style.top = `${y + 400}px`;
+    newBox2.style.top = `${y + 400}px`;
+
+
+    newBox2.style.position = "absolute";
+    newBox2.style.left = "50px";
+    newBox2.style.top = "100px";
+
+    newBox.appendChild(newBox1);
+    newBox.appendChild(newBox2);
+
+    // Поля ввода
+    let inputField1 = document.createElement("input");
+    inputField1.type = "number";
+    inputField1.min = 0;
+    inputField1.max = 90;
+    inputField1.classList.add("input-number");
+
+    let inputField2 = document.createElement("input");
+    inputField2.type = "number";
+    inputField2.min = 0;
+    inputField2.max = 7;
+    inputField2.classList.add("input-number");
+
+    inputField1.style.width = "40px";
+    inputField1.style.height = "30px";
+    inputField1.style.fontSize = "16px";
+
+    inputField2.style.width = "40px";
+    inputField2.style.height = "30px";
+    inputField2.style.fontSize = "16px";
+
+    newBox1.appendChild(inputField1);
+    newBox2.appendChild(inputField2);
+
+        // Добавляем стили в код
+    let style = document.createElement('style');
+    style.innerHTML = `
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Для Webkit браузеров (Chrome, Safari) */
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield; /* Для Firefox */
+        }
+    `;
+    document.head.appendChild(style);
+
+     // Устанавливаем стили для полей ввода
+    const setInputStyles = (inputField) => {
+        inputField.style.position = "absolute";
+        inputField.style.left = "15px";  // Позиционируем в рамках родителя
+        inputField.style.top = "-5px";  // Позиционируем в рамках родителя
+        inputField.style.zIndex = "1001";  // Делаем поле поверх других элементов
+        inputField.style.pointerEvents = "auto";  // Разрешаем взаимодействие с полем
+        inputField.style.width = "30px";  // Уменьшаем ширину поля
+        inputField.style.height = "45px";  // Устанавливаем высоту (можно настроить)
+        inputField.style.fontSize = "16px";  // Размер шрифта для видимости цифр
+        inputField.style.backgroundColor = "transparent";  // Делаем фон прозрачным
+        inputField.style.border = "none";  // Убираем границы
+        inputField.style.color = "white";  // Устанавливаем цвет текста (можно заменить на другой)
+inputField.style.fontSize = "20px";  // Изменяем размер шрифта (можно задать любой)
+
+    };
+
+        // Применяем стили к обоим полям ввода
+    setInputStyles(inputField1);
+    setInputStyles(inputField2);
+
+
+        // Добавляем поле ввода в нужный контейнер
+    newBox1.appendChild(inputField1);  // Добавляем в новый контейнер
+    newBox2.appendChild(inputField2);  // Добавляем его копию в новый контейнер
+
+        // Устанавливаем стили для контейнеров newBox1 и newBox2
+
+const setBoxStyles = (box, left, top) => {
+    box.style.position = "absolute";
+    box.style.width = "55px";
+    box.style.height = "35px";
+    box.style.backgroundColor = "black";
+    box.style.borderRadius = "8px";
+    box.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    box.style.padding = "10px";
+
+
+};
+
+        // Применяем стили для newBox1 и newBox2
+    setBoxStyles(newBox1);
+    setBoxStyles(newBox2);
+
+    // Устанавливаем их позицию, чтобы они располагались непосредственно под newBox
+    newBox1.style.left = `${x}px`;  // Ожидаем, что это будет так же как у нового бокса
+    newBox1.style.top = `${y + 10}px`;  // Смещаем вниз на 70 пикселей
+
+    newBox2.style.left = `${x + 45}px`;  // Немного смещаем по горизонтали
+    newBox2.style.top = `${y + 0}px`;  // Смещаем вниз на 70 пикселей
+
+    // Добавляем эти элементы в родительский контейнер
+    parentBox.appendChild(newBox1);
+    parentBox.appendChild(newBox2);
+
+    // Слушаем ввод для первого поля, чтобы ограничить цифры от 0 до 90
+    inputField1.addEventListener("input", function(event) {
+        let value = parseInt(inputField1.value);
+        if (value < 0 || value > 90) {
+            inputField1.value = '';  // Очищаем поле, если значение вне диапазона
+        }
+    });
+
+    // Слушаем ввод для второго поля, чтобы ограничить цифры от 0 до 7
+    inputField2.addEventListener("input", function(event) {
+        let value = parseInt(inputField2.value);
+        if (value < 0 || value > 7) {
+            inputField2.value = '';  // Очищаем поле, если значение вне диапазона
+        }
+    });
+
+
+    // Устанавливаем их позицию, чтобы они располагались непосредственно под newBox ТУТ МЕНЯЕТСЯ РОЗМЕР ЭТОЙ ДОЛБАНОЙ ФИГНИ!
+    newBox1.style.position = "absolute";
+    newBox1.style.left = `${x-26}px`;  // Ожидаем, что это будет так же как у нового бокса
+    newBox1.style.top = `${y +41}px`;  // Расстояние от основного бокса вниз
+
+    newBox2.style.position = "absolute";
+    newBox2.style.left = `${x - 5}px`;  // Немного смещаем по горизонтали
+    newBox2.style.top = `${y +41}px`;  // Та же вертикальная позиция для нового бокса
+
+    // Добавляем эти элементы в родительский контейнер
+    parentBox.appendChild(newBox1);
+    parentBox.appendChild(newBox2);
+
+newBox.addEventListener("click", function () {
+    // Показываем список персонажей
+    fetch('/characters')
+        .then(response => response.json())
+        .then(data => {
+            let list = document.getElementById('character-list');
+            list.innerHTML = '';  // Очистить список перед отображением
+            for (let key in data) {
+                let li = document.createElement('li');
+                li.textContent = data[key].name;
+                li.addEventListener('click', function (event) {
+                    event.stopPropagation(); // Чтобы клик не срабатывал на newBox
+                    newBox.style.backgroundImage = `url(${data[key].image})`;
+                    newBox.style.backgroundSize = 'cover';  // Растягиваем картинку на весь div
+                    newBox.style.backgroundPosition = 'center';  // Центрируем картинку
+                    newBox.style.backgroundRepeat = 'no-repeat';
+
+                    document.querySelector('.character-dropdown').style.display = 'none';  // Скрываем список после выбора
+                });
+                list.appendChild(li);
+            }
+            // Показываем выпадающий список
+            document.querySelector('.character-dropdown').style.display = 'block';
+        })
+        .catch(err => console.error('Error loading characters:', err));
+});
+
+parentBox.appendChild(newBox);
+
+});
+</script>
+
+
+
+
+
+
+</body>
+</html>

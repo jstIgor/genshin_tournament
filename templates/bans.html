@@ -1,0 +1,77 @@
+from flask import Flask, render_template, request, redirect, session, url_for
+
+app = Flask(__name__)
+app.secret_key = "supersecretkey"
+
+
+one_time_passwords = ["password1", "password2", "password3", "password4", "password5", "password6"]
+used_passwords = []
+
+admin_password = "secret_admin_password"  # Сделаем строкой, а не списком
+admin_username = 'admin'
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        user_input = request.form.get("status_input")
+
+        if user_input in one_time_passwords and user_input not in used_passwords:
+            used_passwords.append(user_input)
+            session["status"] = "player"
+            return redirect(url_for("index"))  # Перенаправляем на /abaut
+
+        elif user_input == admin_password:
+            session["status"] = "admin"
+            return redirect(url_for("index"))  # Перенаправляем на /abaut
+
+        else:
+            return "Неверный код или он уже использован. Попробуйте снова."
+
+    return render_template("about.html")
+
+@app.route("/regist", methods=["GET", "POST"])
+def page2():
+    if request.method == "POST":
+        user_input = request.form.get("status_input")
+
+        if user_input in one_time_passwords and user_input not in used_passwords:
+            used_passwords.append(user_input)
+            session["status"] = "player"
+            return redirect(url_for("index"))  # Перенаправляем на /abaut
+
+        elif user_input == admin_password:
+            session["status"] = "admin"
+            return redirect(url_for("index"))  # Перенаправляем на /abaut
+
+        else:
+            return "Неверный код или он уже использован. Попробуйте снова."
+    return render_template("regist.html")
+
+
+@app.route("/pravil")
+def page3():
+        return render_template("Pravil.html")
+
+@app.route("/tablo")
+def page4():
+        return render_template("tablo.html")
+
+@app.route("/regis_zap")
+def page5():
+    if session.get("status") ==  "admin":
+        return render_template("regis_zapolnenie.html")
+    return redirect(url_for("index"))
+
+@app.route("/bans")
+def page6():
+    if session.get("status") in ["player", "admin"]:
+        return render_template("bans.html")
+    return redirect(url_for("index"))
+
+@app.route("/logout")
+def logout():
+    session.pop("status", None)  # Сбрасываем статус пользователя
+    return redirect(url_for("index"))  # Перенаправляем на главную
+
+if __name__ == "__main__":
+    app.run(debug=True)

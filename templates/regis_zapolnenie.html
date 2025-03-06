@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='about.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Pravil.css') }}" />
+<link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='setka.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='rigist.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='regis_zapolnenie.css') }}" />
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='about.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  <title>Mogo</title>
+</head>
+
+<body>
+
+<img src="{{ url_for('static', filename='image/background main.png') }}" alt="Фоновое изображение" class="bg" />
+<img src="{{ url_for('static', filename='image//Black-T line top.png') }}" alt="Фоновое изображение" class="gena" />
+
+
+
+
+
+
+
+
+
+
+<!--    {% if session.get('status') == 'admin' %}-->
+<!--    &lt;!&ndash; Кнопка только для админа &ndash;&gt;-->
+<!--    <button>Ничего не делает</button>-->
+<!--    {% endif %}-->
+
+
+
+
+  <div class="intro">
+
+      <img src="{{ url_for('static', filename='image//tg.png') }}" alt="Фоновое изображение" class="tg" />
+
+
+    <h1 class="white-text2">Wuthering</h1>
+    <h1 class="white-text22">Waves</h1>
+    <div class="centered-links1">
+        <nav class="panelll">
+            <ul>
+              <li><a onclick="window.location.href='/'">About</a></li>
+                <li><a onclick="window.location.href='/regist'">Participate</a></li>
+                <li><a onclick="window.location.href='/pravil'">Rules</a></li>
+                <li><a onclick="window.location.href='/tablo'">Tournament Bracket</a></li>
+
+                    {% if session.get('status') in ["player", "admin"] %}
+                <li><a onclick="window.location.href='/regis_zap'">regis_zap</a></li>
+                    {% endif %}
+
+                            {% if session.get('status') =="admin" %}
+                <li><a onclick="window.location.href='/regis_zap'">Participate5</a></li>
+                    {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+
+ <div class="user-name">
+    <input type="text" name="username" placeholder="">
+
+ </div>
+
+
+<h1 class="white-text_c">CHARACTERS</h1>
+<h1 class="white-text_c2">WEAPONS</h1>
+
+
+
+
+<div class="container">
+  <div class="login-box">
+    <div class="login-box-0">
+      <button class="white-text_c2-0">+</button>
+    </div>
+    <div class="login-box-02 hidden-first">
+      <div class="login-box-021" data-type="character" data-field="1"></div>
+      <div class="login-box-022" data-type="character" data-field="2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Выпадающий список с названием -->
+<div class="character-dropdown" style="display: none;">
+  <p>Выберите персонажа:</p>
+  <ul id="character-list"></ul>
+</div>
+
+<!-- Место для отображения изображения выбранного персонажа -->
+<img id="character-image" src="" style="display: none; margin-top: 20px;"/>
+
+<script>
+// Слушаем клик по кнопке с классом ".white-text_c2-0"
+document.querySelector(".white-text_c2-0").addEventListener("click", function () {
+    // Получаем родительский контейнер для новых боксов
+    let parentBox = document.querySelector(".login-box");
+
+    // Создаем новый элемент div, который будет представлять новый бокс
+    let newBox = document.createElement("div");
+    newBox.classList.add("login-box-02");  // Добавляем класс для стилизации бокса
+
+    // Считаем количество уже существующих боксов внутри родительского контейнера
+    let count = parentBox.querySelectorAll(".login-box-02").length;
+
+
+        let rowSpacing = 140; // Устанавливаем расстояние между рядами (например, 150px)
+
+
+    // Вычисляем позицию нового бокса по горизонтали и вертикали, чтобы они располагались сеткой
+    let x = 50 + (count % 5) * 110 + 5;  // Расстояние по горизонтали
+    let y = 50 + Math.floor(count / 5) * rowSpacing;  // Расстояние по вертикали
+
+
+
+    // Устанавливаем позицию нового бокса (с абсолютным позиционированием)
+    newBox.style.position = "absolute";
+    newBox.style.left = `${x}px`;  // Устанавливаем отступ по горизонтали
+    newBox.style.top = `${y+85}px`;   // Устанавливаем отступ по вертикали
+
+    newBox.style.top = `${y + 4}px`;
+
+    // Добавляем новый бокс в родительский контейнер
+    parentBox.appendChild(newBox);
+
+    // Создаём два вложенных блока
+    let newBox1 = document.createElement("div");
+    let newBox2 = document.createElement("div");
+    newBox1.classList.add("login-box-021");
+    newBox2.classList.add("login-box-022");
+
+
+    // Добавляем названия для удобства идентификации
+newBox1.setAttribute("data-character", "Персонаж 1");
+newBox2.setAttribute("data-character", "Персонаж 2");
+
+    newBox1.style.position = "absolute";
+    newBox1.style.left = "0px";
+    newBox1.style.top = "50px";
+
+    newBox1.style.top = `${y + 400}px`;
+    newBox2.style.top = `${y + 400}px`;
+
+
+    newBox2.style.position = "absolute";
+    newBox2.style.left = "50px";
+    newBox2.style.top = "100px";
+
+    newBox.appendChild(newBox1);
+    newBox.appendChild(newBox2);
+
+    // Поля ввода
+    let inputField1 = document.createElement("input");
+    inputField1.type = "number";
+    inputField1.min = 0;
+    inputField1.max = 90;
+    inputField1.classList.add("input-number");
+    inputField1.setAttribute("data-character-input", "Персонаж 1");
+
+
+    let inputField2 = document.createElement("input");
+    inputField2.type = "number";
+    inputField2.min = 0;
+    inputField2.max = 7;
+    inputField2.classList.add("input-number");
+    inputField2.setAttribute("data-character-input", "Персонаж 2");
+
+
+    inputField1.style.width = "40px";
+    inputField1.style.height = "30px";
+    inputField1.style.fontSize = "16px";
+
+    inputField2.style.width = "40px";
+    inputField2.style.height = "30px";
+    inputField2.style.fontSize = "16px";
+
+    newBox1.appendChild(inputField1);
+    newBox2.appendChild(inputField2);
+
+        // Добавляем стили в код
+    let style = document.createElement('style');
+    style.innerHTML = `
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Для Webkit браузеров (Chrome, Safari) */
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield; /* Для Firefox */
+        }
+    `;
+    document.head.appendChild(style);
+
+     // Устанавливаем стили для полей ввода
+    const setInputStyles = (inputField) => {
+        inputField.style.position = "absolute";
+        inputField.style.left = "10px";  // Позиционируем в рамках родителя
+        inputField.style.top = "-5px";  // Позиционируем в рамках родителя
+        inputField.style.zIndex = "1001";  // Делаем поле поверх других элементов
+        inputField.style.pointerEvents = "auto";  // Разрешаем взаимодействие с полем
+        inputField.style.width = "30px";  // Уменьшаем ширину поля
+        inputField.style.height = "45px";  // Устанавливаем высоту (можно настроить)
+        inputField.style.fontSize = "16px";  // Размер шрифта для видимости цифр
+        inputField.style.backgroundColor = "transparent";  // Делаем фон прозрачным
+        inputField.style.border = "none";  // Убираем границы
+        inputField.style.color = "white";  // Устанавливаем цвет текста (можно заменить на другой)
+inputField.style.fontSize = "20px";  // Изменяем размер шрифта (можно задать любой)
+
+    };
+
+        // Применяем стили к обоим полям ввода
+    setInputStyles(inputField1);
+    setInputStyles(inputField2);
+
+
+        // Добавляем поле ввода в нужный контейнер
+    newBox1.appendChild(inputField1);  // Добавляем в новый контейнер
+    newBox2.appendChild(inputField2);  // Добавляем его копию в новый контейнер
+
+        // Устанавливаем стили для контейнеров newBox1 и newBox2
+
+const setBoxStyles = (box, left, top) => {
+    box.style.position = "absolute";
+    box.style.width = "50px";
+    box.style.height = "30px";
+    box.style.backgroundColor = "black";
+    box.style.borderRadius = "0px";
+    box.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    box.style.padding = "10px";
+
+
+};
+
+        // Применяем стили для newBox1 и newBox2
+    setBoxStyles(newBox1);
+    setBoxStyles(newBox2);
+
+    // Устанавливаем их позицию, чтобы они располагались непосредственно под newBox
+    newBox1.style.left = `${x}px`;  // Ожидаем, что это будет так же как у нового бокса
+    newBox1.style.top = `${y + 10}px`;  // Смещаем вниз на 70 пикселей
+
+    newBox2.style.left = `${x + 45}px`;  // Немного смещаем по горизонтали
+    newBox2.style.top = `${y + 0}px`;  // Смещаем вниз на 70 пикселей
+
+    // Добавляем эти элементы в родительский контейнер
+    parentBox.appendChild(newBox1);
+    parentBox.appendChild(newBox2);
+
+    // Слушаем ввод для первого поля, чтобы ограничить цифры от 0 до 90
+    inputField1.addEventListener("input", function(event) {
+        let value = parseInt(inputField1.value);
+        if (value < 0 || value > 90) {
+            inputField1.value = '';  // Очищаем поле, если значение вне диапазона
+        }
+    });
+
+    // Слушаем ввод для второго поля, чтобы ограничить цифры от 0 до 7
+    inputField2.addEventListener("input", function(event) {
+        let value = parseInt(inputField2.value);
+        if (value < 0 || value > 7) {
+            inputField2.value = '';  // Очищаем поле, если значение вне диапазона
+        }
+    });
+
+
+    // Устанавливаем их позицию, чтобы они располагались непосредственно под newBox ТУТ МЕНЯЕТСЯ РОЗМЕР ЭТОЙ ДОЛБАНОЙ ФИГНИ!
+    newBox1.style.position = "absolute";
+    newBox1.style.left = `${x-24.8}px`;  // Ожидаем, что это будет так же как у нового бокса
+    newBox1.style.top = `${y +41}px`;  // Расстояние от основного бокса вниз
+
+    newBox2.style.position = "absolute";
+    newBox2.style.left = `${x - 2.5}px`;  // Немного смещаем по горизонтали
+    newBox2.style.top = `${y +41}px`;  // Та же вертикальная позиция для нового бокса
+
+    // Добавляем эти элементы в родительский контейнер
+    parentBox.appendChild(newBox1);
+    parentBox.appendChild(newBox2);
+
+let selectedCharacters = new Set(); // Глобальный список выбранных персонажей
+
+newBox.addEventListener("click", function (event) {
+    event.stopPropagation(); // Чтобы список не скрывался при клике внутри него
+
+    // Показываем список персонажей
+    fetch('/characters')
+        .then(response => response.json())
+        .then(data => {
+            let list = document.getElementById('character-list');
+            list.innerHTML = '';  // Очистить список перед отображением
+
+            // Проверяем, существует ли поле поиска, если нет, то создаем его
+            let searchInput = document.getElementById('character-search');
+            if (!searchInput) {
+                searchInput = document.createElement('input');
+                searchInput.id = 'character-search';
+                searchInput.type = 'text';
+                searchInput.placeholder = 'Поиск...';
+                searchInput.style.width = '100%';
+                searchInput.style.padding = '5px';
+                searchInput.style.marginBottom = '5px';
+                searchInput.style.boxSizing = 'border-box';
+
+                // Вставляем поле поиска перед списком
+                let dropdown = document.querySelector('.character-dropdown');
+                dropdown.insertBefore(searchInput, list);
+
+                // При вводе текста - фильтруем
+                searchInput.addEventListener('input', function() {
+                    filterAndSortList(data, searchInput.value);
+                });
+            }
+
+            // Функция для фильтрации и сортировки списка по запросу
+            function filterAndSortList(data, searchTerm) {
+                let filteredData = [];
+                let lowerSearchTerm = searchTerm.toLowerCase();
+
+                // Фильтруем элементы по совпадению с запросом
+                for (let key in data) {
+                    if (data[key].name.toLowerCase().includes(lowerSearchTerm)) {
+                        filteredData.push(data[key]);
+                    }
+                }
+
+                // Сортируем от наиболее подходящих к менее подходящим
+                filteredData.sort((a, b) => {
+                    let aName = a.name.toLowerCase();
+                    let bName = b.name.toLowerCase();
+
+                    let matchA = aName.indexOf(lowerSearchTerm);
+                    let matchB = bName.indexOf(lowerSearchTerm);
+
+                    return matchA - matchB;
+                });
+
+                // Отображаем отсортированный список
+                displayCharacters(filteredData);
+            }
+
+            // Отображаем все элементы персонажей
+            function displayCharacters(characters) {
+                list.innerHTML = '';  // Очистить список перед добавлением новых элементов
+
+                for (let key in characters) {
+                    if (selectedCharacters.has(characters[key].name)) continue; // Пропускаем уже выбранных
+
+                    let li = document.createElement('li');
+                    li.style.display = 'flex';
+                    li.style.alignItems = 'center';
+                    li.style.padding = '5px';
+                    li.style.cursor = 'pointer';
+
+                    // Создаём мини-иконку персонажа
+                    let img = document.createElement('img');
+                    img.src = characters[key].image;
+                    img.style.width = '40px';
+                    img.style.height = '40px';
+                    img.style.borderRadius = '50%';
+                    img.style.marginRight = '10px';
+
+                    li.appendChild(img);
+                    li.appendChild(document.createTextNode(characters[key].name));
+
+                    li.addEventListener('click', function (event) {
+                        event.stopPropagation();
+
+                        // Устанавливаем картинку на фон newBox
+                        newBox.style.backgroundImage = `url(${characters[key].image})`;
+                        newBox.style.backgroundSize = 'cover';
+                        newBox.style.backgroundPosition = 'center';
+                        newBox.style.backgroundRepeat = 'no-repeat';
+
+                        selectedCharacters.add(characters[key].name); // Добавляем в список выбранных
+                        document.querySelector('.character-dropdown').style.display = 'none';  // Скрываем список
+                    });
+
+                    list.appendChild(li);
+                }
+            }
+
+            // Изначально отображаем все элементы
+            displayCharacters(data);
+
+            // Размещаем список над newBox
+            let dropdown = document.querySelector('.character-dropdown');
+            dropdown.style.display = 'block';
+
+            let rect = newBox.getBoundingClientRect();
+            dropdown.style.position = 'absolute';
+            dropdown.style.left = `${rect.left}px`;
+            dropdown.style.top = `${rect.top - dropdown.offsetHeight - 10}px`;
+
+            // Если выпадающий список выходит за границы экрана - показываем его снизу
+            if (dropdown.getBoundingClientRect().top < 0) {
+                dropdown.style.top = `${rect.bottom + 30}px`;
+            }
+        })
+        .catch(err => console.error('Error loading characters:', err));
+});
+
+// Добавляем в разметку родителя newBox
+parentBox.appendChild(newBox);
+
+// Закрыть список при клике в любом месте страницы
+document.addEventListener('click', function (event) {
+    // Проверяем, что клик не был на списке персонажей или на элементе newBox
+    let dropdown = document.querySelector('.character-dropdown');
+    if (!dropdown.contains(event.target) && !newBox.contains(event.target)) {
+        dropdown.style.display = 'none';  // Скрываем список
+    }
+});
+
+
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+  <div class="login-box2">
+    <div class="login-box-0">
+      <button class="white-text_c2-02">+</button>
+    </div>
+    <div class="login-box-02 hidden-first">
+      <div class="login-box-021"></div>
+      <div class="login-box-022"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Выпадающий список с названием -->
+<!-- Выпадающий список для оружия -->
+<div class="weapon-dropdown" style="display: none;">
+    <p>Выберите оружие:</p>
+
+    <ul id="weapon-list"></ul>
+</div>
+
+
+<!-- Место для отображения изображения выбранного персонажа -->
+<img id="character-image" src="" style="display: none; margin-top: 20px;"/>
+
+<script>
+// Слушаем клик по кнопке с классом ".white-text_c2-02"
+document.querySelector(".white-text_c2-02").addEventListener("click", function () {
+    // Получаем родительский контейнер для новых боксов
+    let parentBox = document.querySelector(".login-box2");
+
+    // Создаем новый элемент div, который будет представлять новый бокс
+    let newBox = document.createElement("div");
+    newBox.classList.add("login-box-02");  // Добавляем класс для стилизации бокса
+
+    // Считаем количество уже существующих боксов внутри родительского контейнера
+    let count = parentBox.querySelectorAll(".login-box-02").length;
+
+
+        let rowSpacing = 140; // Устанавливаем расстояние между рядами (например, 150px)
+
+
+    // Вычисляем позицию нового бокса по горизонтали и вертикали, чтобы они располагались сеткой
+    let x = 50 + (count % 5) * 110 + 5;  // Расстояние по горизонтали
+    let y = 50 + Math.floor(count / 5) * rowSpacing;  // Расстояние по вертикали
+
+
+
+    // Устанавливаем позицию нового бокса (с абсолютным позиционированием)
+    newBox.style.position = "absolute";
+    newBox.style.left = `${x}px`;  // Устанавливаем отступ по горизонтали
+    newBox.style.top = `${y+85}px`;   // Устанавливаем отступ по вертикали
+
+    newBox.style.top = `${y + 4}px`;
+
+    // Добавляем новый бокс в родительский контейнер
+    parentBox.appendChild(newBox);
+
+    // Создаём два вложенных блока
+    let newBox1 = document.createElement("div");
+    let newBox2 = document.createElement("div");
+    newBox1.classList.add("login-box-021");
+    newBox2.classList.add("login-box-022");
+
+    newBox1.style.position = "absolute";
+    newBox1.style.left = "0px";
+    newBox1.style.top = "50px";
+
+    newBox1.style.top = `${y + 400}px`;
+    newBox2.style.top = `${y + 400}px`;
+
+
+    newBox2.style.position = "absolute";
+    newBox2.style.left = "50px";
+    newBox2.style.top = "100px";
+
+    newBox.appendChild(newBox1);
+    newBox.appendChild(newBox2);
+
+    // Поля ввода
+    let inputField1 = document.createElement("input");
+    inputField1.type = "number";
+    inputField1.min = 0;
+    inputField1.max = 90;
+    inputField1.classList.add("input-number");
+
+    let inputField2 = document.createElement("input");
+    inputField2.type = "number";
+    inputField2.min = 0;
+    inputField2.max = 7;
+    inputField2.classList.add("input-number");
+
+    inputField1.style.width = "40px";
+    inputField1.style.height = "30px";
+    inputField1.style.fontSize = "16px";
+
+    inputField2.style.width = "40px";
+    inputField2.style.height = "30px";
+    inputField2.style.fontSize = "16px";
+
+    newBox1.appendChild(inputField1);
+    newBox2.appendChild(inputField2);
+
+        // Добавляем стили в код
+    let style = document.createElement('style');
+    style.innerHTML = `
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Для Webkit браузеров (Chrome, Safari) */
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield; /* Для Firefox */
+        }
+    `;
+    document.head.appendChild(style);
+
+     // Устанавливаем стили для полей ввода
+    const setInputStyles = (inputField) => {
+        inputField.style.position = "absolute";
+        inputField.style.left = "15px";  // Позиционируем в рамках родителя
+        inputField.style.top = "-5px";  // Позиционируем в рамках родителя
+        inputField.style.zIndex = "1001";  // Делаем поле поверх других элементов
+        inputField.style.pointerEvents = "auto";  // Разрешаем взаимодействие с полем
+        inputField.style.width = "30px";  // Уменьшаем ширину поля
+        inputField.style.height = "45px";  // Устанавливаем высоту (можно настроить)
+        inputField.style.fontSize = "16px";  // Размер шрифта для видимости цифр
+        inputField.style.backgroundColor = "transparent";  // Делаем фон прозрачным
+        inputField.style.border = "none";  // Убираем границы
+        inputField.style.color = "white";  // Устанавливаем цвет текста (можно заменить на другой)
+inputField.style.fontSize = "20px";  // Изменяем размер шрифта (можно задать любой)
+
+    };
+
+        // Применяем стили к обоим полям ввода
+    setInputStyles(inputField1);
+    setInputStyles(inputField2);
+
+
+        // Добавляем поле ввода в нужный контейнер
+    newBox1.appendChild(inputField1);  // Добавляем в новый контейнер
+    newBox2.appendChild(inputField2);  // Добавляем его копию в новый контейнер
+
+        // Устанавливаем стили для контейнеров newBox1 и newBox2
+
+const setBoxStyles = (box, left, top) => {
+    box.style.position = "absolute";
+    box.style.width = "55px";
+    box.style.height = "35px";
+    box.style.backgroundColor = "black";
+    box.style.borderRadius = "8px";
+    box.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    box.style.padding = "10px";
+
+
+};
+
+        // Применяем стили для newBox1 и newBox2
+    setBoxStyles(newBox1);
+    setBoxStyles(newBox2);
+
+    // Устанавливаем их позицию, чтобы они располагались непосредственно под newBox
+    newBox1.style.left = `${x}px`;  // Ожидаем, что это будет так же как у нового бокса
+    newBox1.style.top = `${y + 10}px`;  // Смещаем вниз на 70 пикселей
+
+    newBox2.style.left = `${x + 45}px`;  // Немного смещаем по горизонтали
+    newBox2.style.top = `${y + 0}px`;  // Смещаем вниз на 70 пикселей
+
+    // Добавляем эти элементы в родительский контейнер
+    parentBox.appendChild(newBox1);
+    parentBox.appendChild(newBox2);
+
+    // Слушаем ввод для первого поля, чтобы ограничить цифры от 0 до 90
+    inputField1.addEventListener("input", function(event) {
+        let value = parseInt(inputField1.value);
+        if (value < 0 || value > 90) {
+            inputField1.value = '';  // Очищаем поле, если значение вне диапазона
+        }
+    });
+
+    // Слушаем ввод для второго поля, чтобы ограничить цифры от 0 до 7
+    inputField2.addEventListener("input", function(event) {
+        let value = parseInt(inputField2.value);
+        if (value < 0 || value > 5) {
+            inputField2.value = '';  // Очищаем поле, если значение вне диапазона
+        }
+    });
+
+
+    // Устанавливаем их позицию, чтобы они располагались непосредственно под newBox ТУТ МЕНЯЕТСЯ РОЗМЕР ЭТОЙ ДОЛБАНОЙ ФИГНИ!
+    newBox1.style.position = "absolute";
+    newBox1.style.left = `${x-26}px`;  // Ожидаем, что это будет так же как у нового бокса
+    newBox1.style.top = `${y +41}px`;  // Расстояние от основного бокса вниз
+
+    newBox2.style.position = "absolute";
+    newBox2.style.left = `${x - 5}px`;  // Немного смещаем по горизонтали
+    newBox2.style.top = `${y +41}px`;  // Та же вертикальная позиция для нового бокса
+
+    // Добавляем эти элементы в родительский контейнер
+    parentBox.appendChild(newBox1);
+    parentBox.appendChild(newBox2);
+
+let selectedWeapons = new Set(); // Глобальный список выбранного оружия
+
+newBox.addEventListener("click", function (event) {
+    event.stopPropagation(); // Чтобы список не скрывался при клике внутри него
+
+    // Показываем список оружия
+    fetch('/weapons')
+        .then(response => response.json())
+        .then(data => {
+            let list = document.getElementById('weapon-list');
+            list.innerHTML = '';  // Очистить список перед отображением
+
+            // Проверяем, существует ли поле поиска, если нет, то создаем его
+            let searchInput = document.getElementById('weapon-search');
+            if (!searchInput) {
+                searchInput = document.createElement('input');
+                searchInput.id = 'weapon-search';
+                searchInput.type = 'text';
+                searchInput.placeholder = 'Поиск...';
+                searchInput.style.width = '100%';
+                searchInput.style.padding = '5px';
+                searchInput.style.marginBottom = '5px';
+                searchInput.style.boxSizing = 'border-box';
+
+                // Вставляем поле поиска перед списком
+                let dropdown = document.querySelector('.weapon-dropdown');
+                dropdown.insertBefore(searchInput, list);
+
+                // При вводе текста - фильтруем
+                searchInput.addEventListener('input', function() {
+                    filterAndSortList(data, searchInput.value);
+                });
+            }
+
+            // Функция для фильтрации и сортировки списка по запросу
+            function filterAndSortList(data, searchTerm) {
+                let filteredData = [];
+                let lowerSearchTerm = searchTerm.toLowerCase();
+
+                // Фильтруем элементы по совпадению с запросом
+                for (let key in data) {
+                    if (data[key].name.toLowerCase().includes(lowerSearchTerm)) {
+                        filteredData.push(data[key]);
+                    }
+                }
+
+                // Сортируем от наиболее подходящих к менее подходящим
+                filteredData.sort((a, b) => {
+                    let aName = a.name.toLowerCase();
+                    let bName = b.name.toLowerCase();
+
+                    let matchA = aName.indexOf(lowerSearchTerm);
+                    let matchB = bName.indexOf(lowerSearchTerm);
+
+                    return matchA - matchB;
+                });
+
+                // Отображаем отсортированный список
+                displayWeapons(filteredData);
+            }
+
+            // Отображаем все элементы оружия
+            function displayWeapons(weapons) {
+                list.innerHTML = '';  // Очистить список перед добавлением новых элементов
+
+                for (let key in weapons) {
+                    if (selectedWeapons.has(weapons[key].name)) continue; // Пропускаем уже выбранное оружие
+
+                    let li = document.createElement('li');
+                    li.style.display = 'flex';
+                    li.style.alignItems = 'center';
+                    li.style.padding = '5px';
+                    li.style.cursor = 'pointer';
+
+                    // Мини-иконка оружия
+                    let img = document.createElement('img');
+                    img.src = weapons[key].image;
+                    img.style.width = '40px';
+                    img.style.height = '40px';
+                    img.style.borderRadius = '50%';
+                    img.style.marginRight = '10px';
+
+                    li.appendChild(img);
+                    li.appendChild(document.createTextNode(weapons[key].name));
+
+                    li.addEventListener('click', function (event) {
+                        event.stopPropagation();
+
+                        // Устанавливаем картинку на фон newBox
+                        newBox.style.backgroundImage = `url(${weapons[key].image})`;
+                        newBox.style.backgroundSize = 'cover';
+                        newBox.style.backgroundPosition = 'center';
+                        newBox.style.backgroundRepeat = 'no-repeat';
+
+                        selectedWeapons.add(weapons[key].name); // Добавляем в список выбранных
+                        document.querySelector('.weapon-dropdown').style.display = 'none';  // Скрываем список
+                    });
+
+                    list.appendChild(li);
+                }
+            }
+
+            // Изначально отображаем все элементы
+            displayWeapons(data);
+
+            // Размещаем список над newBox
+            let rect = newBox.getBoundingClientRect();
+            let dropdown = document.querySelector('.weapon-dropdown');
+            dropdown.style.display = 'block';
+            dropdown.style.position = 'absolute';
+            dropdown.style.left = `${rect.left}px`;
+            dropdown.style.top = `${rect.top - dropdown.offsetHeight - 10}px`;
+
+            // Если выпадающий список выходит за границы экрана - показываем его снизу
+            if (dropdown.getBoundingClientRect().top < 0) {
+                dropdown.style.top = `${rect.bottom + 30}px`;
+            }
+        })
+        .catch(err => console.error('Error loading weapons:', err));
+});
+
+// Добавляем в разметку родителя newBox
+parentBox.appendChild(newBox);
+
+// Закрыть список при клике в любом месте страницы
+document.addEventListener('click', function (event) {
+    // Проверяем, что клик не был на списке оружия или на элементе newBox
+    let dropdown = document.querySelector('.weapon-dropdown');
+    if (!dropdown.contains(event.target) && !newBox.contains(event.target)) {
+        dropdown.style.display = 'none';  // Скрываем список
+    }
+});
+
+
+});
+</script>
+
+<script>
+// Функция для расчета похожести строк (по количеству совпавших символов)
+function calculateMatchScore(itemName, searchTerm) {
+    let matchScore = 0;
+    let lowerItemName = itemName.toLowerCase();
+    let lowerSearchTerm = searchTerm.toLowerCase();
+
+    // Проводим поиск каждого символа в itemName и увеличиваем балл за совпадение
+    for (let i = 0; i < lowerSearchTerm.length; i++) {
+        if (lowerItemName[i] === lowerSearchTerm[i]) {
+            matchScore++;
+        }
+    }
+
+    return matchScore;
+}
+
+// Функция для фильтрации и сортировки списка по поисковому запросу
+function filterWeaponList() {
+    let input = document.getElementById('weapon-search');
+    let list = document.getElementById('weapon-list');
+    if (!input || !list) return;
+
+    let filter = input.value.toLowerCase();
+    let items = Array.from(list.children);
+
+    // Если нет ввода в поле поиска, показываем все элементы как есть
+    if (filter === '') {
+        items.forEach(item => item.style.display = 'flex');
+        return;
+    }
+
+    // Сортируем элементы по совпадению с запросом
+    let sortedItems = items.sort((a, b) => {
+        let aText = a.textContent.toLowerCase();
+        let bText = b.textContent.toLowerCase();
+        let aScore = calculateMatchScore(aText, filter);
+        let bScore = calculateMatchScore(bText, filter);
+
+        // Сортируем по убыванию: чем больше совпадений, тем выше элемент
+        return bScore - aScore;
+    });
+
+    // Обновляем порядок элементов в списке
+    sortedItems.forEach(item => list.appendChild(item));
+
+    // Отображаем элементы, которые не совпадают с поиском
+    items.forEach(item => {
+        if (!item.textContent.toLowerCase().includes(filter)) {
+            item.style.display = 'none';
+        } else {
+            item.style.display = 'flex';
+        }
+    });
+}
+
+// Функция для добавления поискового поля
+function addWeaponSearch() {
+    let dropdown = document.querySelector('.weapon-dropdown');
+    if (!dropdown) return;
+
+    // Проверяем, есть ли уже поле поиска
+    if (document.getElementById('weapon-search')) return;
+
+    let searchInput = document.createElement('input');
+    searchInput.id = 'weapon-search';
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Поиск...';
+    searchInput.style.width = '100%';
+    searchInput.style.padding = '5px';
+    searchInput.style.marginBottom = '5px';
+    searchInput.style.boxSizing = 'border-box';
+
+    // Вставляем поле перед списком
+    let weaponList = document.getElementById('weapon-list');
+    if (weaponList) {
+        weaponList.parentNode.insertBefore(searchInput, weaponList);
+    }
+
+    // При вводе текста - фильтруем
+    searchInput.addEventListener('input', filterWeaponList);
+}
+
+// Добавляем поиск после открытия списка
+document.addEventListener('click', function () {
+    setTimeout(addWeaponSearch, 100);
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<h1 class="white-text_c3">NICKNAME</h1>
+<h1 class="white-text_c4">SCREENSHOTS</h1>
+<div class="login-box23">
+  <form>
+  </form>
+</div>
+
+<div class="login-box234" onclick="document.getElementById('fileInput').click()">
+    <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+</div>
+
+<script>
+document.getElementById('fileInput').addEventListener('change', function(event) {
+    let container = document.querySelector('.login-box234');
+    let files = event.target.files;
+
+    for (let file of files) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let imgContainer = document.createElement('div');
+            imgContainer.classList.add('image-container');
+
+            let img = document.createElement('img');
+            img.src = e.target.result;
+
+            let deleteBtn = document.createElement('button');
+            deleteBtn.innerText = '×';
+            deleteBtn.classList.add('delete-btn');
+
+            // Останавливаем всплытие события при клике на кнопку
+            deleteBtn.onclick = function(event) {
+                event.stopPropagation();
+                imgContainer.remove();
+            };
+
+            imgContainer.appendChild(img);
+            imgContainer.appendChild(deleteBtn);
+
+            // Добавляем картинку в НАЧАЛО контейнера
+            container.insertBefore(imgContainer, container.firstChild);
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+
+
+
+
+
+
+      <h1 class="you">Programmer</h1>
+    <h1 class="you2">@zymer44</h1>
+
+
+  </div>
+
+
+
+<div class = 'sdf'>
+
+
+
+<button type="button" class="button">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    class="bi bi-arrow-repeat"
+    viewBox="0 0 16 16"
+  >
+    <path
+      d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+    ></path>
+    <path
+      fill-rule="evenodd"
+      d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+    ></path>
+  </svg>
+  Отправить
+</button>
+
+
+
+<script>
+// Обработчик кнопки отправки
+document.querySelector('.button').addEventListener('click', function() {
+    const selectedBoxes = document.querySelectorAll('.login-box-02');
+    let selectedCharacters = [];
+    let selectedWeapons = [];
+
+    selectedBoxes.forEach(box => {
+        const backgroundImage = box.style.backgroundImage;
+        if (backgroundImage) {
+            const imageUrl = backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2');
+
+            if (imageUrl.includes('/characters/')) {
+                selectedCharacters.push(imageUrl);
+            } else if (imageUrl.includes('/weapons/')) {
+                selectedWeapons.push(imageUrl);
+            }
+        }
+    });
+
+    // Отправляем данные одним запросом
+    fetch('/save_data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            characters: selectedCharacters,
+            weapons: selectedWeapons
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) console.log('Данные сохранены');
+        else console.error('Ошибка сохранения');
+    })
+    .catch(error => console.error('Ошибка при отправке данных:', error));
+});
+</script>
+
+
+
+<img src="{{ url_for('static', filename='image//twich.png') }}" alt="Фоновое изображение" class="twich2" />
+    <h1 class="logo11">miroichii</h1>
+    <h1 class="logo211">MaliwanRill</h1>
+</div>
+</body>
+</html>
