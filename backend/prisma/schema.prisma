@@ -7,6 +7,7 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
@@ -15,39 +16,74 @@ datasource db {
 enum Role {
   ADMIN
   PLAYER
+  USER
 }
 
 model User {
-  id                 String      @id @default(cuid())
-  selectedWeapons    Weapon[]
-  selectedCharacters Character[]
-  passwordHash       String      @map("password_hash")
-  name               String      @unique
-  role               Role?        @default(PLAYER)
+  id            String       @id @default(cuid())
+  passwordHash  String       @map("password_hash")
+  name          String       @unique
+  role          Role?        @default(USER)
+  screenshots   Screenshot[]
+  gamesAsWinner Game[]       @relation("WinnerGame")
+  gamesAsLoser  Game[]       @relation("LoserGame")
+
+  PickedCharacter    PickedCharacterByUser[]
+  PickedWeaponByUser PickedWeaponByUser[]
 
   @@map("user")
 }
 
-enum statusMatch {
-  onIdle
-  over
+model Game {
+  id       String @id @default(cuid())
+  winner   User   @relation("WinnerGame", fields: [winnerId], references: [id])
+  winnerId String
+
+  loser   User   @relation("LoserGame", fields: [loserId], references: [id])
+  loserId String
+}
+
+model Screenshot {
+  name   String
+  userid String @unique
+  author User   @relation(fields: [userid], references: [id])
 }
 
 model Character {
-  id      String  @id @default(cuid())
-  picture String  @default("no-image-hero.png")
-  score   Int
-  User    User?   @relation(fields: [userId], references: [id])
-  userId  String?
+  id              String                  @id @default(cuid())
+  picture         String                  @default("no-image-hero.png")
+  PickedCharacter PickedCharacterByUser[]
 
   @@map("character")
 }
 
+model PickedCharacterByUser {
+  id          String    @id @default(cuid())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  chatacter   Character @relation(fields: [characterId], references: [id])
+  characterId String
+  score       Int
+
+  @@map("picked_character_by_user")
+}
+
+model PickedWeaponByUser {
+  id       String @id @default(cuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  weapon   Weapon @relation(fields: [weaponId], references: [id])
+  weaponId String
+  score    Int
+
+  @@map("picked_weapon_by_user")
+}
+
 model Weapon {
-  id     String  @id @default(cuid())
-  score  Int
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  id                 String               @id @default(cuid())
+  userId             String?
+  picture            String?
+  PickedWeaponByUser PickedWeaponByUser[]
 
   @@map("weapon")
 }

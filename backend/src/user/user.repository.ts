@@ -4,7 +4,7 @@ import { registerUserDto } from './dtos/register-user.dto';
 import { User } from '@prisma/client';
 import * as argon2 from 'argon2';
 @Injectable()
-export class UserService {
+export class UserRepository {
   constructor(private prisma: PrismaService) {}
   async createUser(dto: registerUserDto): Promise<User | void> {
     try {
@@ -12,7 +12,7 @@ export class UserService {
       const user = await this.prisma.user.create({
         data: {
           passwordHash: hashPassword,
-          name: dto.nickName,
+          name: dto.name,
         },
       });
       return user;
@@ -21,13 +21,13 @@ export class UserService {
     }
   }
 
-  async findUserByNickName(nickname: string) {
+  async findUserByName(nickname: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         name: nickname,
       },
     });
-    console.log(user);
+    
     return user;
   }
 
@@ -38,11 +38,5 @@ export class UserService {
       },
     });
   }
-  async deleteUser(id: string) {
-    return await this.prisma.user.delete({
-      where: {
-        id: id,
-      },
-    });
-  }
+
 }
